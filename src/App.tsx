@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Sun, Moon, BookOpen, ExternalLink } from 'lucide-react';
+import BlogPost from './components/BlogPost';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
+  const [currentPage, setCurrentPage] = useState<'home' | 'part1'>('home');
 
   useEffect(() => {
     // Check for saved theme preference or default to light mode
@@ -26,18 +28,35 @@ function App() {
     setDarkMode(!darkMode);
   };
 
+  const navigateToPost = (postId: string) => {
+    if (postId === 'part1') {
+      setCurrentPage('part1');
+    }
+  };
+
+  const navigateToHome = () => {
+    setCurrentPage('home');
+  };
+
+  if (currentPage === 'part1') {
+    return <BlogPost onBack={navigateToHome} />;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {/* Header */}
       <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
-        <div className="max-w-4xl mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
+            <button 
+              onClick={navigateToHome}
+              className="flex items-center space-x-3 hover:opacity-80 transition-opacity duration-200"
+            >
               <BookOpen className="h-8 w-8 text-blue-600 dark:text-blue-400" />
               <h1 className="text-xl font-bold text-gray-900 dark:text-white">
                 Matrix Engineering Blog
               </h1>
-            </div>
+            </button>
             <button
               onClick={toggleDarkMode}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
@@ -54,7 +73,7 @@ function App() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-6 py-12">
+      <main className="max-w-7xl mx-auto px-6 py-12">
         {/* Hero Section */}
         <div className="mb-16">
           <div className="text-center mb-8">
@@ -82,10 +101,13 @@ function App() {
           <div className="space-y-6">
             {/* Part 1 */}
             <div className="group">
-              <a href="#part1" className="flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-200">
+              <button 
+                onClick={() => navigateToPost('part1')}
+                className="flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-200"
+              >
                 <span className="font-medium">Part 1: Introduction</span>
                 <ExternalLink className="h-4 w-4 ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </a>
+              </button>
               <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 ml-4">
                 Setting the foundation for matrix reverse engineering
               </p>
@@ -183,7 +205,7 @@ function App() {
 
       {/* Footer */}
       <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 transition-colors duration-300 mt-16">
-        <div className="max-w-4xl mx-auto px-6 py-8">
+        <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
